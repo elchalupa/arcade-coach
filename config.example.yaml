@@ -1,0 +1,89 @@
+# arcade-coach configuration
+# Copy to config.yaml and customize
+
+# Health reminder intervals
+health:
+  # Hours before break reminder (0 to disable)
+  break_reminder_hours: 2
+  
+  # Minutes between hydration nudges (0 to disable)
+  hydration_minutes: 45
+  
+  # Minutes between posture checks (0 to disable)
+  posture_minutes: 90
+  
+  # Hours before "you've been live X hours" alert (0 to disable)
+  stream_duration_alert_hours: 4
+
+# Context detection thresholds
+context:
+  # Messages per minute considered "hype" (don't interrupt)
+  chat_velocity_high: 10
+  
+  # Messages per minute considered "quiet" (good window)
+  chat_velocity_low: 2
+  
+  # Seconds of quiet before considering it a "window"
+  silence_window_seconds: 30
+  
+  # Minutes to wait after hype before allowing reminders
+  post_hype_cooldown_minutes: 5
+
+# Keywords that block reminders (case-insensitive)
+# If these appear in recent chat, delay the reminder
+blockers:
+  enabled: true
+  lookback_seconds: 60
+  keywords:
+    - "boss"
+    - "fight"
+    - "fighting"
+    - "clutch"
+    - "close"
+    - "run"
+    - "dont"
+    - "wait"
+    - "omg"
+    - "holy"
+    - "no way"
+    - "lets go"
+
+# Snooze behavior
+snooze:
+  # Minutes to wait when auto-snoozing due to context
+  auto_snooze_minutes: 10
+  
+  # Maximum times to auto-snooze before forcing notification
+  max_auto_snoozes: 3
+
+# Notification settings
+notifications:
+  sound: true
+  app_name: "Coach"
+  
+  # Custom messages (use {hours}, {minutes} placeholders)
+  messages:
+    break: "You've been streaming for {hours}h {minutes}m without a break. Chat's quiet — good time!"
+    hydration: "Hydration check! Take a sip."
+    posture: "Posture check! Shoulders back, feet flat."
+    duration: "You've been live for {hours} hours. How are you feeling?"
+
+# Speaker.bot integration (optional)
+speakerbot:
+  enabled: false
+  websocket_url: "ws://localhost:7474"
+
+# Streamer.bot integration (optional)
+streamerbot:
+  enabled: false
+  websocket_url: "ws://localhost:8080"
+  
+  # Trigger these actions on events
+  actions:
+    on_break_taken: ""      # Action name to trigger
+    on_ad_window: ""        # Action name when good ad window detected
+
+# Logging
+logging:
+  level: "INFO"
+  show_context_checks: false  # Debug: show every context evaluation
