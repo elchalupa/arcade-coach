@@ -1,174 +1,153 @@
 # arcade-coach
 
-Context-aware stream management — intelligent timing for breaks, ads, and self-care reminders.
+A context-aware self-care assistant for streamers.
 
-## Philosophy
+Coach monitors your stream and sends gentle reminders to take breaks, stay hydrated, and check your posture. Unlike a simple timer, Coach waits for the right moment - it never interrupts a hype moment or active conversation.
 
-**Never interrupt a moment. Wait for the right window.**
+**Philosophy:** Never interrupt a moment. Wait for the right window.
 
-Dumb timers fire regardless of context. arcade-coach understands what's happening in your stream and waits for the right moment to nudge you.
+## Features
 
-| Dumb Timer | Smart Coach |
-|------------|-------------|
-| "Break every 30 min" | "2 hours without a break, chat just went quiet — good time" |
-| "Run ads now" | "Ad timer up, but chat is hyped — snoozing 10 min" |
-| "Drink water" | "You've been talking nonstop — take a sip" |
+**Break Reminder**
+After 2 hours of streaming, Coach reminds you to stand up, stretch, and rest your eyes.
 
-## Features (Planned)
+**Hydration Nudge**
+Every 45 minutes, a gentle reminder to take a sip of water.
 
-### Health Reminders
-- **Break reminder** — 2+ hours since last break (configurable)
-- **Hydration nudge** — 45 min intervals
-- **Posture check** — 90 min intervals
-- **"You've been live X hours"** — Long stream awareness
+**Posture Check**
+Every 90 minutes, a reminder to sit up straight and relax your shoulders.
 
-### Context-Aware Timing
-All reminders wait for a "good window":
-- Chat velocity low (quiet moment)
-- No emotional moments in progress
-- No intense gameplay keywords detected
-- Streamer not mid-sentence (Speaker.bot integration)
+**Stream Duration Alert**
+After 4 hours, Coach suggests considering wrapping up soon.
 
-### Ad Management
-- Detect when ad timer fires
-- Auto-snooze if chat is hype
-- Notify when a good ad window opens
+**Context Awareness**
+Coach monitors chat activity and waits for quiet moments. It detects hype keywords and won't interrupt when chat is popping off.
 
-## Architecture
+## Installation
+
+### Prerequisites
+
+- Python 3.11+
+- Windows, macOS, or Linux
+- Twitch account
+
+### Setup
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/elchalupa/arcade-coach.git
+   cd arcade-coach
+   ```
+
+2. Create virtual environment:
+   ```
+   # Windows
+   py -3.11 -m venv venv
+   .\venv\Scripts\Activate
+
+   # macOS/Linux
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Configure the application:
+
+   If this is your first time, create your config files:
+   ```
+   # Windows
+   if not exist config.yaml copy config.example.yaml config.yaml
+   if not exist .env copy .env.example .env
+
+   # macOS/Linux
+   cp -n config.example.yaml config.yaml
+   cp -n .env.example .env
+   ```
+
+5. Edit `.env` with your Twitch credentials.
+
+6. (Optional) Customize `config.yaml` with your preferred timer intervals.
+
+## Usage
+
+### Start the application
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      ARCADE-COACH                           │
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                 Signal Collectors                    │   │
-│  │                                                     │   │
-│  │  • Chat velocity (Twitch IRC)                       │   │
-│  │  • Keywords detection                               │   │
-│  │  • Streamer voice activity (Speaker.bot)            │   │
-│  │  • Manual snooze commands                           │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                           │                                 │
-│                           ▼                                 │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                  Context Engine                      │   │
-│  │                                                     │   │
-│  │  is_good_time_for("break") → (bool, reason)         │   │
-│  │  is_good_time_for("ad") → (bool, reason)            │   │
-│  │  is_good_time_for("hydration") → (bool, reason)     │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                           │                                 │
-│                           ▼                                 │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                  Action Manager                      │   │
-│  │                                                     │   │
-│  │  • Health timers (break, water, posture)            │   │
-│  │  • Ad timer integration                             │   │
-│  │  • Snooze queue                                     │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                           │                                 │
-│              ┌────────────┼────────────┐                   │
-│              ▼            ▼            ▼                   │
-│       ┌──────────┐ ┌──────────┐ ┌──────────┐              │
-│       │  Toast   │ │Streamer  │ │ Speaker  │              │
-│       │ Notifs   │ │  .bot    │ │  .bot    │              │
-│       └──────────┘ └──────────┘ └──────────┘              │
-└─────────────────────────────────────────────────────────────┘
+python -m coach
 ```
 
-## The "Good Time" Algorithm
+Or on Windows:
 
-```python
-def is_good_time_for(action: str) -> tuple[bool, str]:
-    # Blockers - never interrupt these
-    if chat_velocity > HIGH_THRESHOLD:
-        return (False, "Chat is popping off")
-    
-    if detected_keywords(["boss", "fight", "clutch", "run", "close"]):
-        return (False, "Intense gameplay detected")
-    
-    if streamer_actively_talking:  # Speaker.bot
-        return (False, "You're mid-sentence")
-    
-    # Enablers - good windows
-    if chat_velocity < LOW_THRESHOLD:
-        return (True, "Chat is quiet")
-    
-    if streamer_silent_for(minutes=2):
-        return (True, "Natural pause")
-    
-    return (False, "No clear window yet")
+```
+start.bat
 ```
 
-## Integration Points
+### What you'll see
 
-| System | Purpose | Required |
-|--------|---------|----------|
-| Twitch IRC | Chat monitoring | Yes |
-| Windows Toasts | Notifications | Yes |
-| Speaker.bot | Voice activity detection | Optional |
-| Streamer.bot | Action triggers, ad control | Optional |
+```
+  ╔═╗┌─┐┌─┐┌─┐┬ ┬
+  ║  │ │├─┤│  ├─┤
+  ╚═╝└─┘┴ ┴└─┘┴ ┴
+
+  Stream Self-Care v0.1.0
+
+[Coach] Loading configuration...
+[Coach] Connecting to #yourchannel...
+
+[Coach] Connected to #yourchannel
+[Coach] Monitoring context... (Ctrl+C to stop)
+
+[Coach] Active timers:
+  - Break: 120 min remaining
+  - Hydration: 45 min remaining
+  - Posture: 90 min remaining
+  - Duration: 240 min remaining
+```
+
+When a timer is due and chat is quiet, you'll get a notification.
 
 ## Configuration
 
+Edit `config.yaml` to customize behavior:
+
 ```yaml
-# Reminder intervals
-health:
-  break_reminder_hours: 2
-  hydration_minutes: 45
-  posture_minutes: 90
-  stream_duration_alert_hours: 4
+timers:
+  break_reminder_minutes: 120      # 0 to disable
+  hydration_reminder_minutes: 45
+  posture_reminder_minutes: 90
+  stream_duration_alert_minutes: 240
 
-# Context thresholds
 context:
-  chat_velocity_high: 10    # msgs/min = hype
-  chat_velocity_low: 2      # msgs/min = quiet
-  silence_window_seconds: 30
+  quiet_threshold_seconds: 30      # Seconds of silence = "quiet"
+  hype_cooldown_seconds: 60        # Wait after hype before reminding
+  wait_for_quiet: true             # false = ignore context, remind immediately
 
-# Keywords that block reminders
-blockers:
-  keywords:
-    - "boss"
-    - "fight"
-    - "clutch"
-    - "run"
-    - "close"
-    - "dont"
-    - "wait"
-
-# Integrations
-integrations:
-  speakerbot:
-    enabled: false
-    websocket_url: "ws://localhost:7474"
-  streamerbot:
-    enabled: false
-    websocket_url: "ws://localhost:8080"
+notifications:
+  sound: true
+  app_name: "Coach"
 ```
 
 ## Relationship to arcade-heartbeat
 
-| arcade-heartbeat | arcade-coach |
-|------------------|--------------|
-| Community health monitor | Streamer health manager |
-| "Is my chat engaged?" | "Is now a good time?" |
-| Viewer-focused | Streamer-focused |
-| Engagement prompts | Self-care prompts |
+These are companion tools with different focuses:
 
-Both tools share:
-- Twitch IRC monitoring
-- Windows toast notifications
-- YAML configuration
-- Prompt customization
+- **arcade-heartbeat** = Community health (monitors chat, tracks viewers, engagement prompts)
+- **arcade-coach** = Streamer health (self-care reminders with context awareness)
 
-They can run independently or together as part of the arcade suite.
+They can run simultaneously and share the same Twitch credentials.
 
-## Related Projects
+## Future Enhancements
 
-- [arcade-heartbeat](https://github.com/elchalupa/arcade-heartbeat) — Community engagement monitor
-- [arcade-tts](https://github.com/elchalupa/arcade-tts) — Channel point TTS
-- [arcade-jam](https://github.com/elchalupa/arcade-jam) — AI jam roulette
+- [ ] Speaker.bot integration (detect when streamer is talking)
+- [ ] Streamer.bot integration (coordinate with ad breaks)
+- [ ] Custom reminder messages
+- [ ] Snooze functionality
+- [ ] Stream schedule awareness
 
 ## License
 
-MIT License — See [LICENSE](LICENSE) for details.
+MIT License

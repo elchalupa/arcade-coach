@@ -1,18 +1,19 @@
-# Byte-compiled
+# Environment
+.env
+venv/
+.venv/
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Virtual environments
-venv/
-env/
-.venv/
-
-# Environment files
-.env
-
-# Configuration with secrets
-config.yaml
+*.so
+.Python
+build/
+dist/
+eggs/
+*.egg-info/
+*.egg
 
 # IDE
 .idea/
@@ -20,13 +21,9 @@ config.yaml
 *.swp
 *.swo
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-logs/
-
-# Session data
-*.db
+# Config (keep example, ignore user config)
+config.yaml

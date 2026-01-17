@@ -1,0 +1,21 @@
+# arcade-coach dependencies
+
+# Twitch IRC client
+# Pinned to v2.x - v3.0 introduced breaking API changes
+twitchio>=2.8.0,<3.0.0
+
+# Notifications - platform specific
+winotify>=1.1.0; sys_platform == "win32"
+plyer>=2.1.0; sys_platform != "win32"
+
+# Configuration
+pyyaml>=6.0.1
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# CLI colors
+colorama>=0.4.6
+
+# Async support
+aiohttp>=3.9.0
