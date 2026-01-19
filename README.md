@@ -2,9 +2,11 @@
 
 A context-aware self-care assistant for streamers.
 
-Coach monitors your stream and sends gentle reminders to take breaks, stay hydrated, and check your posture. Unlike a simple timer, Coach waits for the right moment - it never interrupts a hype moment or active conversation.
+Coach monitors your stream and sends gentle reminders to take breaks, stay hydrated, and check your posture. Unlike a simple timer, Coach waits for the right moment — it never interrupts a hype moment or active conversation.
 
 **Philosophy:** Never interrupt a moment. Wait for the right window.
+
+> **Platform:** Windows 10/11 only. macOS/Linux support is planned for a future release.
 
 ## Features
 
@@ -27,8 +29,8 @@ Coach monitors chat activity and waits for quiet moments. It detects hype keywor
 
 ### Prerequisites
 
+- Windows 10/11 (required)
 - Python 3.11+
-- Windows, macOS, or Linux
 - Twitch account
 
 ### Setup
@@ -41,13 +43,8 @@ Coach monitors chat activity and waits for quiet moments. It detects hype keywor
 
 2. Create virtual environment:
    ```
-   # Windows
    py -3.11 -m venv venv
    .\venv\Scripts\Activate
-
-   # macOS/Linux
-   python3 -m venv venv
-   source venv/bin/activate
    ```
 
 3. Install dependencies:
@@ -59,13 +56,8 @@ Coach monitors chat activity and waits for quiet moments. It detects hype keywor
 
    If this is your first time, create your config files:
    ```
-   # Windows
    if not exist config.yaml copy config.example.yaml config.yaml
    if not exist .env copy .env.example .env
-
-   # macOS/Linux
-   cp -n config.example.yaml config.yaml
-   cp -n .env.example .env
    ```
 
 5. Edit `.env` with your Twitch credentials.
@@ -80,7 +72,7 @@ Coach monitors chat activity and waits for quiet moments. It detects hype keywor
 python -m coach
 ```
 
-Or on Windows:
+Or use the batch file:
 
 ```
 start.bat
@@ -109,6 +101,10 @@ start.bat
 ```
 
 When a timer is due and chat is quiet, you'll get a notification.
+
+### Stop the application
+
+Press `Ctrl+C` in the console window.
 
 ## Configuration
 
@@ -142,12 +138,20 @@ They can run simultaneously and share the same Twitch credentials.
 
 ## Future Enhancements
 
+- [ ] macOS/Linux support
 - [ ] Speaker.bot integration (detect when streamer is talking)
 - [ ] Streamer.bot integration (coordinate with ad breaks)
 - [ ] Custom reminder messages
 - [ ] Snooze functionality
 - [ ] Stream schedule awareness
 
+## Related Projects
+
+- [arcade-heartbeat](https://github.com/elchalupa/arcade-heartbeat) — Stream engagement copilot
+- [arcade-tts](https://github.com/elchalupa/arcade-tts) — Channel point TTS with voice cloning
+- [arcade-jam](https://github.com/elchalupa/arcade-jam) — AI jam roulette for music streams
+- [arcade-newsletter](https://github.com/elchalupa/arcade-newsletter) — Automated monthly newsletter
+
 ## License
 
-MIT License
+MIT License — See [LICENSE](LICENSE) for details.
